@@ -1,0 +1,40 @@
+{
+  "__version__": "1.0.2",
+  "general": {
+    "designResolution": {
+      "fitHeight": true,
+      "fitWidth": true,
+      "width": 1400,
+      "height": 1400
+    }
+  },
+  "layer": [
+    {
+      "name": "GAME",
+      "value": 524288
+    }
+  ],
+  "physics": {
+    "collisionGroups": [
+      {
+        "index": 1,
+        "name": "blocker_double"
+      },
+      {
+        "index": 2,
+        "name": "ring"
+      },
+      {
+        "index": 3,
+        "name": "blocker_single"
+      }
+    ],
+    "collisionMatrix": {
+      "0": 1,
+      "1": 6,
+      "2": 14,
+      "3": 12
+    },
+    "autoSimulation": true
+  }
+}

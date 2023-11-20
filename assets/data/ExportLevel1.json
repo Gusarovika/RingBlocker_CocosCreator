@@ -1,0 +1,71 @@
+[
+	{
+		"type": "Ring",
+		"color": "Blue",
+		"x": 425,
+		"y": -208,
+		"angle": 280,
+		"path": "prefabs/Ring",
+		"imagePath": "images/ring/ring_blue/spriteFrame"
+	},
+	{
+		"type": "Ring",
+		"color": "Green",
+		"x": -473,
+		"y": -214,
+		"angle": 190,
+		"path": "prefabs/Ring",
+		"imagePath": "images/ring/ring_green/spriteFrame"
+	},
+	{
+		"type": "Ring",
+		"color": "Red",
+		"x": -20,
+		"y": -210,
+		"angle": 190,
+		"path": "prefabs/Ring",
+		"imagePath": "images/ring/ring_red/spriteFrame"
+	},
+	{
+		"type": "Ring",
+		"color": "Yellow",
+		"x": -247,
+		"y": 182,
+		"angle": 11,
+		"path": "prefabs/Ring",
+		"imagePath": "images/ring/ring_yellow/spriteFrame",
+		"blockers": [51.002, 109.463],
+		"blockerPrefabPath": "prefabs/SingleBlocker",
+		"blockerPath": "images/blockers_single/single_blocker_yellow/spriteFrame"
+	},
+	{
+		"type": "Ring",
+		"color": "Pink",
+		"x": 202,
+		"y": 179,
+		"angle": -16,
+		"path": "prefabs/Ring",
+		"imagePath": "images/ring/ring_pink/spriteFrame",
+		"blockers": [77.655, 136.079],
+		"blockerPrefabPath": "prefabs/SingleBlocker",
+		"blockerPath": "images/blockers_single/single_blocker_pink/spriteFrame"
+	},
+	{
+		"type": "Blocker",
+		"color": "Yellow",
+		"x": 199,
+		"y": -214,
+		"angle": 0,
+		"path": "prefabs/Blocker",
+		"imagePath": "images/blocker/blocker_yellow/spriteFrame"
+	},
+	{
+		"type": "Blocker",
+		"color": "Pink",
+		"x": -241,
+		"y": -214,
+		"angle": 0,
+		"path": "prefabs/Blocker",
+		"imagePath": "images/blocker/blocker_pink/spriteFrame"
+	}
+]
