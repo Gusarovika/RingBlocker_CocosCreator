@@ -1,4 +1,4 @@
-import { Node, AudioSource, Component, AudioClip, resources, director, _decorator, Enum } from 'cc';
+import { Node, AudioSource, Component, AudioClip, _decorator, Enum } from 'cc';
 import SoundType from '../Enums/SoundType';
 
 const { ccclass, property } = _decorator;
@@ -7,13 +7,18 @@ Enum(SoundType);
 
 @ccclass('SoundHelper')
 class SoundHelper {
-	@property({ type: SoundType }) type: SoundType = null;
-	@property({ type: AudioClip }) sound: AudioClip = null;
+	@property({ type: SoundType, tooltip: 'Type of the sound' })
+	type: SoundType = null;
+
+	@property({ type: AudioClip, tooltip: 'Audio clip for the sound' })
+	sound: AudioClip = null;
 }
 
 @ccclass('SoundManager')
 export class SoundManager extends Component {
-	@property({ type: [SoundHelper] }) sounds: SoundHelper[] = [];
+	@property({ type: [SoundHelper], tooltip: 'List of sounds settings for the game' })
+	sounds: SoundHelper[] = [];
+
 	private _audioSource: AudioSource;
 
 	onLoad() {

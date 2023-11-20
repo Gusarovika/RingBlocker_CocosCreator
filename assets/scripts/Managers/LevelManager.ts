@@ -1,24 +1,13 @@
 import { GameObjectManager } from './GameObjectManager';
-import {
-	_decorator,
-	Component,
-	Node,
-	JsonAsset,
-	Enum,
-	v2,
-	resources,
-	Asset,
-	SpriteFrame,
-	Prefab,
-	ProgressBar,
-} from 'cc';
+import { _decorator, Component, Node, JsonAsset, Enum, v2, resources, Asset, SpriteFrame, Prefab } from 'cc';
 import GameObjectType from '../Enums/GameObjectType';
 import { GameObject } from '../GameObjects/GameObject';
 import { ObjectPool } from '../Utils/ObjectPool';
-import { Tutorial } from '../Ui/Tutorial';
 import ColorType from '../Enums/ColorType';
 import { SoundManager } from './SoundManager';
 import SoundType from '../Enums/SoundType';
+import { UiManager } from './UiManager';
+import { EventType, customEvent } from '../Enums/GameEvent';
 
 const { ccclass, property } = _decorator;
 Enum(GameObjectType);
@@ -26,28 +15,45 @@ Enum(ColorType);
 
 @ccclass('LevelManager')
 export class LevelManager extends Component {
-	@property({ type: JsonAsset }) data: JsonAsset = null;
-	@property({ type: ObjectPool }) objectPool: ObjectPool = null;
-	@property({ type: GameObjectManager }) gameObjectManager: GameObjectManager = null;
-	@property({ type: Node }) public world: Node = null;
-	@property({ type: ProgressBar }) public loader: ProgressBar = null;
-	@property({ type: Tutorial }) tutor: Tutorial = null;
-	@property({ type: SoundManager }) soundManager: SoundManager = null;
+	@property({ type: [JsonAsset], tooltip: 'Array of JsonAssets' })
+	data: JsonAsset[] = [];
 
-	_level: {} = {};
-	_data: {} = {};
-	_objectArray: GameObject[] = [];
+	@property({ type: ObjectPool, tooltip: 'Reference to the ObjectPool' })
+	objectPool: ObjectPool = null;
 
-	protected onLoad(): void {
-		this._setLevelData(this.data);
+	@property({ type: GameObjectManager, tooltip: 'Reference to the GameObjectManager' })
+	gameObjectManager: GameObjectManager = null;
+
+	@property({ type: Node, tooltip: 'Reference to the world Node' })
+	public world: Node = null;
+
+	@property({ type: SoundManager, tooltip: 'Reference to the SoundManager' })
+	soundManager: SoundManager = null;
+
+	@property({ type: UiManager, tooltip: 'Reference to the UiManager' })
+	ui: UiManager = null;
+
+	private _data: {} = {};
+	private _objectArray: GameObject[] = [];
+	private _countLevel: number = 0;
+
+	protected onLoad(): void {}
+
+	protected onEnable() {
+		this._init();
+		customEvent.on(EventType.LEVEL_RESTART, this.onLevelRestart, this);
+		customEvent.on(EventType.LEVEL_NEXT, this.onLevelNext, this);
 	}
 
-	protected async onEnable() {
-		this.loader.node.active = true;
+	/*  init level*/
+	private async _init() {
+		if (this.ui.loader) this.ui.loader.node.active = true;
+		this._setLevelData(this.data[this._countLevel]);
+
 		await this._createPools();
 		await this._createLevel();
-		this.loader.node.active = false;
-		if (this.tutor) this.tutor.activate();
+		if (this.ui.loader) this.ui.loader.node.active = false;
+		if (this.ui.tutor && this.ui.tutor) this.ui.tutor.activate();
 		if (this.soundManager) this.soundManager.play(SoundType.Complete, 1, true);
 	}
 
@@ -80,7 +86,7 @@ export class LevelManager extends Component {
 				this.objectPool.initPool(prefab, type);
 				loadedCount += 1;
 				let progress = loadedCount / Object.keys(this._data).length;
-				this.loader.progress = progress;
+				if (this.ui.loader) this.ui.loader.progress = progress;
 			} else {
 				console.error(`Failed to load prefab at path: ${gameObjectData.path}`);
 			}
@@ -125,14 +131,34 @@ export class LevelManager extends Component {
 		});
 	}
 
-	/* remove object from object array and from nodepool */
+	/* restart level */
+	private _restart() {
+		this.objectPool.reset();
+		this._init();
+		this.ui.toggleResult(false);
+	}
 
+	/* remove object from object array and from nodepool */
 	public deleteGameObject(go: GameObject) {
 		const index = this._objectArray.indexOf(go);
 		this.gameObjectManager.destroyGameObject(go);
 		this._objectArray.splice(index, 1);
 		if (this._objectArray.length === 0) {
-			if (this.tutor) this.tutor.node.active = false;
+			if (this.ui.tutor) this.ui.tutor.node.active = false;
+			let hasNext = this._countLevel < this.data.length - 1;
+			this.ui.toggleResult(true, hasNext);
+			this.soundManager.stop();
 		}
+	}
+
+	/* handle restart event */
+	private onLevelRestart() {
+		this._restart();
+	}
+
+	/* handle next level event */
+	private onLevelNext() {
+		this._countLevel = Math.min(this._countLevel + 1, this.data.length - 1);
+		this._restart();
 	}
 }

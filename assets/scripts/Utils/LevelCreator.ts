@@ -20,8 +20,9 @@ interface Level {
 
 @ccclass('Rings')
 export class Rings extends Component {
-	@property({ type: Node }) ringHolder: Node = null;
-	@property({ type: Node }) downloadBtn: Node = null;
+	@property({ type: Node, tooltip: 'the node that must contain only gameobjects for the download' })
+	ringHolder: Node = null;
+	@property({ type: Node, tooltip: 'will download json with the level setting' }) downloadBtn: Node = null;
 
 	private _rings: Node[] = [];
 

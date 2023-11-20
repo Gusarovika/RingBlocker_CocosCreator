@@ -1,4 +1,4 @@
-import { _decorator, Component, Collider2D, Contact2DType, RigidBody2D, IPhysics2DContact, Node } from 'cc';
+import { _decorator, Component, Collider2D, Contact2DType, IPhysics2DContact, Node } from 'cc';
 import { GameObject } from '../GameObjects/GameObject';
 import { EventType, customEvent } from '../Enums/GameEvent';
 import { Ring } from '../GameObjects/Ring';

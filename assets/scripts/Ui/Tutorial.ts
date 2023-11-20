@@ -23,10 +23,17 @@ const skeletonEvent = Enum({
 
 @ccclass('Tutorial')
 export class Tutorial extends Component {
-	@property({ type: CCInteger }) timeToActivateTutorial = 0;
-	@property({ type: CCFloat }) moveTime = 0;
-	@property({ type: CCInteger }) moveAngle = 0;
-	@property offset = new Vec3();
+	@property({ type: CCInteger, tooltip: 'Time to activate the tutorial' })
+	timeToActivateTutorial = 0;
+
+	@property({ type: CCFloat, tooltip: 'Time for a move' })
+	moveTime = 0;
+
+	@property({ type: CCInteger, tooltip: 'Angle for a move' })
+	moveAngle = 0;
+
+	@property({ tooltip: 'Offset vector for tutor hand to in the  center of the target ring' })
+	offset = new Vec3();
 	private _isUserActive: boolean = false;
 	private _inactiveTime: number = 0;
 	private _tutorActive: boolean = false;

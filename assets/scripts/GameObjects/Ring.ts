@@ -1,6 +1,6 @@
 import { _decorator, EventTouch, Vec2, UITransform, Vec3, tween, Input, Enum } from 'cc';
 import { GameObject } from './GameObject';
-import { ColliderComponent } from '../Game/ColliderComponent';
+import { ColliderComponent } from '../Collision/ColliderComponent';
 import { EventType, customEvent } from '../Enums/GameEvent';
 import SoundType from '../Enums/SoundType';
 
